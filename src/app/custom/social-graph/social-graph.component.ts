@@ -74,8 +74,7 @@ interface INode_Datum extends Omit<INode, "id">{
 export class SocialGraphComponent implements OnInit {
 
   // Define the key data structures needed throughout the class
-  private nodes!: INode[];
-  private links!: ICore_Data[];
+
   private svg: SVGElement | {} | HTMLElement | any;
   private height: number = window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight;
   private width: number = window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth;
@@ -103,21 +102,21 @@ export class SocialGraphComponent implements OnInit {
 
   private setup(data_imported: any): void {
     // First, execute data manipulation and then build the SVG
-    // Next version: Consider building this flow using a promise
+    let data_nodes!: INode[];
+    let data_links!: ICore_Data[];
     try {
-      this.prepData(data_imported as ICore_Data[]);
-      if (this.nodes == undefined || this.links == undefined) {
+      [data_nodes, data_links] = this.prepData(data_imported as ICore_Data[]);
+      if (data_nodes == undefined || data_links == undefined) {
         throw new Error('Data not imported.')
       }
     } catch (error:any) {
       console.error(error.message)
       this.reportError({message: this.getErrorMessage(error)})
     }
-    
-    this.createSvg();
+    this.createSvg(data_nodes, data_links);
   }
 
-  private prepData(data_initial: ICore_Data[]): void {
+  private prepData(data_initial: ICore_Data[]): [INode[], ICore_Data[]] {
     // console.log("initial", data_initial);
 
     // Filter data based on conditions
@@ -184,21 +183,18 @@ export class SocialGraphComponent implements OnInit {
       return new_d;
     });
 
-    // Transfer the final data structure to the class properties
-    // Consider translating this into a returned value used in a promise structure
-    this.links = data_filtered; 
-    this.nodes = nodes_augmented;
-    // console.log("links", this.links);
-    // console.log("nodes", this.nodes);
+    return [nodes_augmented, data_filtered]
+    // console.log("nodes", nodes_augmented);
+    // console.log("links", data_filtered);
   }
 
   // Create an SVG by definining elements and properties using D3js
-  private createSvg(): void {
+  private createSvg(data_nodes: INode[], data_links: ICore_Data[]): void {
     // FORCE SIMULATION SETUP ================================================================
     // Set up the basic force simulation using node information. This function augments the node data structure with additional structural pieces.
-    let simulation = (d3.forceSimulation(this.nodes) 
+    let simulation = (d3.forceSimulation(data_nodes) 
     // Pass in the link information, which ties to the nodes (linked by the id propert) and add properties to capture the coordinates for drawing link lines
-    .force("link", d3.forceLink(this.links) 
+    .force("link", d3.forceLink(data_links) 
     // Specify the data property to be used for the node id. By using d.id, you refer to the node names IN THE LINK OBJECT. Alternatively, specifying the use of d.index refers to the index property of the nodes
     .id((d:any) => {/*console.log(d);*/ return d.id})))
     // Specify parameters, such as attraction/repulsion, coordinates around which the force is centered, and which properties the force should operate on
@@ -206,7 +202,7 @@ export class SocialGraphComponent implements OnInit {
     .force("center",d3.forceCenter(-1, 1))
     .force("x", d3.forceX())
     .force("y", d3.forceY());
-    //console.log(this.links);
+    //console.log(data_links);
 
     // SVG SETUP ================================================================
     // Get a handle on a div in the html template and add a container SVG object, specifying key properties.
@@ -383,7 +379,7 @@ export class SocialGraphComponent implements OnInit {
       .attr("stroke-width", 1.5)
       .selectAll("path")
       // Join data to the links
-      .data(this.links)
+      .data(data_links)
       .join("path")
       //Style the links
       .style("stroke","steelblue")
@@ -452,7 +448,7 @@ export class SocialGraphComponent implements OnInit {
     .attr("stroke-linejoin", "round")
     .selectAll("g")
     // Join data to each node
-    .data(this.nodes)
+    .data(data_nodes)
     .join("g")
     // Apply drag and drop behavior to node
     .call(this.drag(simulation));
