@@ -1,27 +1,9 @@
 # D3SocialGraph
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.6.
+This project presents the end-product of a process using skills in Python, throttled/paginated API calls, Typescript, and D3 visualization on an Angular platform. See the live visualization [here](https://nostava.com/angular-d3/)
 
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+* Imported data from the [Twitter API] (https://developer.twitter.com/en/docs/twitter-api") using [Python, Tweepy] (https://www.tweepy.org/").
+* Cleaned and structured data using [Python, Pandas] (https://pandas.pydata.org/).
+* Created visualization using [D3.js](https://d3js.org/) (inspired by [this project](https://observablehq.com/@d3/mobile-patent-suits)).
+* Added several customizations and enhancements.
+* Converted to [Typescript](https://www.typescriptlang.org/) and built on the [Angular](https://angular.io/) platform.
