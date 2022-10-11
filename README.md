@@ -1,4 +1,4 @@
-# D3SocialGraph
+# Angular-D3 Social Graph
 
 This project presents the end-product of a process using skills in Python, throttled/paginated API calls, Typescript, and D3 visualization on an Angular platform. See the live visualization [here](https://nostava.com/angular-d3/)
 
