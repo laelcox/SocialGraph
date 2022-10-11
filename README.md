@@ -1,6 +1,6 @@
 # Angular-D3 Social Graph
 
-This project presents the end-product of a process using skills in Python, throttled/paginated API calls, Typescript, and D3 visualization on an Angular platform. See the live visualization [here](https://nostava.com/angular-d3/)
+This project presents the end-product of a process using skills in Python, throttled/paginated API calls, Typescript, and D3 visualization on an Angular platform. See the live visualization [here](https://nostava.com/angular-d3/).
 
 * Imported data from the [Twitter API] (https://developer.twitter.com/en/docs/twitter-api") using [Python, Tweepy] (https://www.tweepy.org/").
 * Cleaned and structured data using [Python, Pandas] (https://pandas.pydata.org/).
