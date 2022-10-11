@@ -91,10 +91,29 @@ export class SocialGraphComponent implements OnInit {
     // console.log("width: ", this.width, "height: ", this.height);
   }
 
+  private getErrorMessage(error: unknown) {
+    let message = 'Unknown error'
+    if (error instanceof Error) return error.message
+    return String(error)
+  }
+
+  private reportError = ({message}: {message: string}) => {
+    // send the error to our logging service...
+  }
+
   private setup(data_imported: any): void {
     // First, execute data manipulation and then build the SVG
     // Next version: Consider building this flow using a promise
-    this.prepData(data_imported as ICore_Data[]);
+    try {
+      this.prepData(data_imported as ICore_Data[]);
+      if (this.nodes == undefined || this.links == undefined) {
+        throw new Error('Data not imported.')
+      }
+    } catch (error:any) {
+      console.error(error.message)
+      this.reportError({message: this.getErrorMessage(error)})
+    }
+    
     this.createSvg();
   }
 
